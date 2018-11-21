@@ -1,0 +1,21 @@
+{
+  "name": "simulate-log",
+  "version": "1.0.0",
+  "description": "用于移动端日志打印",
+  "main": "simulate-log.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leichangchun/simulate-log.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "bugs": {
+    "url": "https://github.com/leichangchun/simulate-log/issues"
+  },
+  "homepage": "https://github.com/leichangchun/simulate-log#readme"
+}

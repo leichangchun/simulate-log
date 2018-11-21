@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo</title>
+    <style>
+        .test-buttons{
+            margin: 500px 0 0 100px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>这是一个测试页面</h1>
+    <div class="test-buttons">
+            <button class="add">增加日志</button>
+            <button class="clear">清除日志</button>
+    </div>
+
+    <script src="./simulatelog.js"></script>
+    <script>
+        window.simulate =  new Simulate({
+            autoScroll : true,
+            autoOpenContent : false
+        });
+        window.onload = function () {
+            document.querySelector('.add').addEventListener('touchend' , () => {
+                simulate.log('日志标题' , '日志内容 --- ' + Math.random() * 1000000000);
+                // simulate.log('日志标题' , {
+                //     color:'red'
+                // });
+            })
+
+            document.querySelector('.clear').addEventListener('touchend' , () => {
+                simulate.clear();
+            })
+        }
+
+    </script>
+</body>
+</html>
