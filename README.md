@@ -25,6 +25,8 @@ contentOpacity |   number   |0.5  | 日志内容背景透明度
 titleColor |  十六进制、rgb、rgba格式颜色  |'rgb(165, 157, 39)' | 日志标题颜色
 logColor |   十六进制、rgb、rgba格式颜色  |'rbg(255,255,255)'      | 日志颜色
 
+*注意：边距和高度的单位均为 rem* 
+
 ### 调用
 使用实例中的log方法打印日志，可接受两个参数，一个为日志标题，一个为日志内容
 ```javaScript
@@ -36,5 +38,6 @@ logColor |   十六进制、rgb、rgba格式颜色  |'rbg(255,255,255)'      | �
 
 ### 效果
 效果截图如下：
+
 ![效果图](./demo.png)
 
