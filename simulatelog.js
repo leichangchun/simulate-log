@@ -1,21 +1,26 @@
+/**
+ * 用于在移动端打印日志
+ */
 class Simulate  {
-    
     constructor(_options = {}) {
         let defaultOptions = { // 默认配置
-            autoScroll : false,
-            autoOpenContent : false
+            autoScroll : false,              // 日志内容是否滚动
+            autoOpenContent : false,         // 日志面板是否自动打开
+            wrapperTop:1,                    // 日志面板到屏幕顶部的距离
+            buttonRight:0.5,                 // 按钮部分距离屏幕右边的距离
+            contentHeight:10,                // 日志内容的高度
+            contentOpacity:0.5,              // 日志内容背景透明度
+            titleColor: 'rgb(165, 157, 39)', // 日志标题颜色
+            logColor:'rbg(255,255,255)'      // 日志颜色
         }
         // 合并配置项
         this.options = Object.assign({},defaultOptions,_options);
 
         if (window) {
             this.DOM = window.document;
+            this.buttonText = this.options.autoOpenContent ? '收起' : '展开';
+            this.scrollButtonText = this.options.autoScroll ? '静止' : '滚动';
 
-            if(this.options.autoOpenContent){ // 初始化操作按钮文案
-                this.buttonText = '收起';
-            } else {
-                this.buttonText = '展开';
-            }
             // 初始化日志容器结构
             this.init();
         }
@@ -24,19 +29,28 @@ class Simulate  {
     init() {
         if (this.DOM) {
             let logWrapper = this.DOM.createElement('aside');
-                logWrapper.style = `position: absolute;top: 1rem;right: 1rem;left: 1rem;z-index: 99999`;
+                logWrapper.style = `position: fixed;top: ${this.options.wrapperTop}rem;right: 1rem;left: 1rem;z-index: 99999`;
  
             let clearButton = this.DOM.createElement('button');
                 clearButton.innerText = '清空';
-                clearButton.style = `position: absolute;top: 0.2rem;right: 3.4rem;height: 1.6rem;width: 3rem;border:none;border-radius: 0.2rem;background-color: rgb(46, 161, 123)`;
+                clearButton.style = `position: absolute;top: 0.2rem;right:${this.options.buttonRight + 6.4}rem;height: 1.6rem;width: 3rem;font-size:0.8rem;border:none;border-radius: 0.2rem;background-color: rgb(46, 161, 123)`;
             
             clearButton.addEventListener('touchend' , () => {
                 this.clear();
             })
 
+            let scrollButton = this.DOM.createElement('button');
+            scrollButton.innerText = this.scrollButtonText;
+            scrollButton.style = `position: absolute;top: 0.2rem;right:${this.options.buttonRight + 3.2}rem;height: 1.6rem;width: 3rem;font-size:0.8rem;border:none;border-radius: 0.2rem;background-color: rgb(46, 161, 123)`;
+        
+            scrollButton.addEventListener('touchend' , () => {
+                this.options.autoScroll = !this.options.autoScroll;
+            })
+
+
             let logButton = this.DOM.createElement('button');
                 logButton.innerText = this.buttonText;
-                logButton.style = `position: absolute;top: 0.2rem;right: 0.2rem;height: 1.6rem;width: 3rem;border:none;border-radius: 0.2rem;background-color: rgb(46, 161, 123)`;
+                logButton.style = `position: absolute;top: 0.2rem;right:${this.options.buttonRight}rem;height: 1.6rem;width: 3rem;font-size:0.8rem;border:none;border-radius: 0.2rem;background-color: rgb(46, 161, 123)`;
             
             logButton.addEventListener('touchend' , () => {
                 if (this.logContent.style.getPropertyValue('display') == 'none') {
@@ -56,14 +70,12 @@ class Simulate  {
             }
 
             let logContent = this.DOM.createElement('ul');
-                logContent.style = `display:${displayString};background-color: rgba(0,0,0,0.5);color: #fff;padding: 0.5rem;border-radius: 0.5rem;border:none;height: 10rem;margin-top: 2rem;list-style-type: decimal;font-size: .8rem;overflow: scroll;animation: 0.5s ease all;`;            
-                logContent.addEventListener('touchend' , () => {
-                    this.options.autoScroll = !this.options.autoScroll;   
-                })
+                logContent.style = `display:${displayString};background-color: rgba(0,0,0,${this.options.contentOpacity});padding: 0.5rem;border-radius: 0.5rem;border:none;height: ${this.options.contentHeight}rem;margin-top: 2rem;list-style-type: decimal;font-size: .8rem;overflow-y: scroll;overflow-x:hidden;animation: 0.5s ease all;`;            
 
             this.logContent = logContent;
             
             logWrapper.appendChild(clearButton);
+            logWrapper.appendChild(scrollButton);
             logWrapper.appendChild(logButton);
             logWrapper.appendChild(logContent);
 
@@ -78,8 +90,9 @@ class Simulate  {
                 b = this.DOM.createElement('b'),
                 span = this.DOM.createElement('span');
 
-            li.style = `margin-left: 1rem;`;
-            b.style = `display: block;padding-right: 0.3rem;color: rgb(165, 157, 39);`;
+            li.style = `margin-left: 1rem;word-wrap: break-word;`;
+            b.style = `display: block;padding-right: 0.3rem;color:${this.options.titleColor};`;
+            span.style = `color: ${this.options.logColor};`;
             
             b.innerText = titleString;
             span.innerText = logString;

@@ -17,25 +17,26 @@
     <h1>这是一个测试页面</h1>
     <div class="test-buttons">
             <button class="add">增加日志</button>
-            <button class="clear">清除日志</button>
     </div>
 
-    <script src="./simulatelog.js"></script>
+    <script src="./simulatelog.min.js"></script>
     <script>
         window.simulate =  new Simulate({
             autoScroll : true,
-            autoOpenContent : false
+            autoOpenContent : false,
+            wrapperTop:3,
+            buttonRight:2,
+            contentHeight:10,
+            contentOpacity:0.5,
+            titleColor: 'rgb(165, 157, 39)',
+            logColor:'rbg(255,255,255)'
         });
         window.onload = function () {
             document.querySelector('.add').addEventListener('touchend' , () => {
                 simulate.log('日志标题' , '日志内容 --- ' + Math.random() * 1000000000);
-                // simulate.log('日志标题' , {
-                //     color:'red'
-                // });
-            })
-
-            document.querySelector('.clear').addEventListener('touchend' , () => {
-                simulate.clear();
+                simulate.log('日志标题' , {
+                    color:'red'
+                });
             })
         }
 
